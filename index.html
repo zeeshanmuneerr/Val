@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Maryam 💖 Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: #ff3c78;
+    transform: rotate(-45deg);
+    opacity: 0.8;
+    animation: float 6s linear infinite;
+  }
+  .heart:before,
+  .heart:after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: #ff3c78;
+    border-radius: 50%;
+  }
+  .heart:before { top: -7.5px; left: 0; }
+  .heart:after { left: 7.5px; top: 0; }
+  @keyframes float {
+    0% { transform: translateY(0) rotate(-45deg); opacity:0.8; }
+    100% { transform: translateY(-600px) rotate(-45deg); opacity:0; }
+  }
+
+  /* Card */
+  .card {
+    width: 50vw;
+    max-width: 600px;
+    height: 50vh;
+    max-height: 400px;
+    background: #fff;
+    border-radius: 25px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+    text-align: center;
+    position: relative;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  h1 {
+    font-size: 32px;
+    color: #e91e63;
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  button {
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    position: absolute;
+    font-weight: bold;
+  }
+
+  #yesBtn {
+    background: #e91e63;
+    color: white;
+    left: 25%;
+    bottom: 30px;
+    width: 120px;
+    height: 45px;
+    font-size: 16px;
+    transition: transform 0.2s ease;
+  }
+  #yesBtn:hover { transform: scale(1.1); }
+
+  #noBtn {
+    background: #ddd;
+    left: 55%;
+    bottom: 30px;
+    width: 120px;
+    height: 45px;
+    font-size: 16px;
+  }
+
+  /* Celebration text */
+  .celebrate-text {
+    font-size: 28px;
+    font-weight: bold;
+    color: #e91e63;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating hearts -->
+<div class="heart" style="left:10%; top:90%;"></div>
+<div class="heart" style="left:30%; top:80%;"></div>
+<div class="heart" style="left:50%; top:95%;"></div>
+<div class="heart" style="left:70%; top:85%;"></div>
+<div class="heart" style="left:90%; top:90%;"></div>
+
+<div class="card" id="card">
+  <div id="contentArea">
+    <h1>💖💖💖 Hello Motto 💖💖💖</h1>
+    <p> will you be my Valentine?  
+    I promise lots of hugs, chocolates 🍫, and silly smiles 😁</p>
+    <p>I dare you say NO to me</p>
+    <button id="yesBtn">Yes 💕</button>
+    <button id="noBtn">No 🙃</button>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const card = document.getElementById("card");
+const contentArea = document.getElementById("contentArea");
+
+// NO button escape
+card.addEventListener("mousemove", (e) => {
+  const cursorX = e.clientX - card.getBoundingClientRect().left;
+  const cursorY = e.clientY - card.getBoundingClientRect().top;
+  const btnX = noBtn.offsetLeft + noBtn.offsetWidth/2;
+  const btnY = noBtn.offsetTop + noBtn.offsetHeight/2;
+  const dx = cursorX - btnX;
+  const dy = cursorY - btnY;
+  const distance = Math.sqrt(dx*dx + dy*dy);
+  if(distance < 120){
+    const angle = Math.atan2(dy, dx);
+    let speed = 200;
+    if(distance < 50) speed = 300;
+    let newX = noBtn.offsetLeft - Math.cos(angle)*speed;
+    let newY = noBtn.offsetTop - Math.sin(angle)*speed;
+    const maxX = card.clientWidth - noBtn.offsetWidth;
+    const maxY = card.clientHeight - noBtn.offsetHeight;
+    if(newX < 0) newX = maxX;
+    if(newX > maxX) newX = 0;
+    if(newY < 0) newY = maxY;
+    if(newY > maxY) newY = 0;
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+  }
+});
+
+// YES button click: show text only
+yesBtn.addEventListener("click", () => {
+  contentArea.innerHTML = `<div class="celebrate-text">😁😁😁 yeayyyyyyy bitch said yes 😁😁😁</div>`;
+});
+</script>
+
+</body>
+</html>
